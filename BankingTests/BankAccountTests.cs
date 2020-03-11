@@ -6,13 +6,19 @@ using Xunit;
 
 namespace BankingTests
 {
+    
     public class BankAccountTests
     {
+        BankAccount account;
+
+        public BankAccountTests()
+        {
+            account = new BankAccount();
+        }
+
         [Fact]
         public void NewAccountHasCorrectBalance()
         {
-            var account = new BankAccount();
-
             decimal currentBalance = account.GetBalance();
 
             Assert.Equal(5000M, currentBalance);
@@ -22,7 +28,6 @@ namespace BankingTests
         public void WithdrawalDecreasesBalance()
         {
             // Arrange - Given
-            var account = new BankAccount();
             var openingBalance = account.GetBalance();
             var amountToWithdraw = 1M;
 
@@ -39,7 +44,6 @@ namespace BankingTests
         public void DepositIncreasesBalance()
         {
             // Arrange - Given
-            var account = new BankAccount();
             var openingBalance = account.GetBalance();
             var amountToDeposit = 1M;
 
@@ -55,12 +59,27 @@ namespace BankingTests
         [Fact]
         public void OverdraftDoesNotDecreaseBalance()
         {
-            var account = new BankAccount();
             var openingBalance = account.GetBalance();
 
-            account.Withdraw(openingBalance + 1);
+            try
+            {
+                account.Withdraw(openingBalance + 1);
+            }
+            catch (Exception)
+            {
+
+                // Intentionally swallowed
+            }
 
             Assert.Equal(openingBalance, account.GetBalance());
+        }
+
+        [Fact]
+        public void OverdraftThrowsAnException()
+        {
+            Assert.Throws<OverdraftException>(
+               () => account.Withdraw(account.GetBalance() + 1)
+               );
         }
     }
 }

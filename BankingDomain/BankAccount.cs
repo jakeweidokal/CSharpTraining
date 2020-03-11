@@ -14,7 +14,7 @@ namespace BankingDomain
         {
             if(amountToWithdraw > CurrentBalance)
             {
-                return;
+                throw new OverdraftException();
             }
             CurrentBalance -= amountToWithdraw;
         }
