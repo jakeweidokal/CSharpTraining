@@ -19,7 +19,7 @@ namespace BankingDomain
             CurrentBalance -= amountToWithdraw;
         }
 
-        public void Deposit(decimal amountToDeposit)
+        public virtual void Deposit(decimal amountToDeposit)
         {
             CurrentBalance += amountToDeposit;
         }
