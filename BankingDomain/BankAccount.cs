@@ -5,12 +5,14 @@ namespace BankingDomain
     public class BankAccount : IProvideBalances
     {
         private ICalculateBonuses BonusCalculator;
+        private INotifyTheFeds FedNotifier;
 
         private decimal CurrentBalance = 5000;
 
-        public BankAccount(ICalculateBonuses bonusCalculator)
+        public BankAccount(ICalculateBonuses bonusCalculator, INotifyTheFeds fedNotifier)
         {
             BonusCalculator = bonusCalculator;
+            FedNotifier = fedNotifier;
         }
 
         public decimal GetBalance()
@@ -24,6 +26,7 @@ namespace BankingDomain
             {
                 throw new OverdraftException();
             }
+            FedNotifier.NotifyOfWithdrawal(this, amountToWithdraw);
             CurrentBalance -= amountToWithdraw;
         }
 

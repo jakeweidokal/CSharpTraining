@@ -13,7 +13,7 @@ namespace BankingTests
         public void TheBonusCalculatorIsUsedToCalculateBonuses()
         {
             var stubbedBonusCalculator = new Mock<ICalculateBonuses>();
-            var account = new BankAccount(stubbedBonusCalculator.Object);
+            var account = new BankAccount(stubbedBonusCalculator.Object, null);
             stubbedBonusCalculator
                 .Setup(b => b.GetBonusFor(account, 100))
                 .Returns(42);
